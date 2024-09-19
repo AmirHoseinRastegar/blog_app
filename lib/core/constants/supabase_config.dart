@@ -1,5 +1,5 @@
 class Constants {
-  static const supaBaseUrl = 'https://lbvmfuqhuqlzzhmjymae.supabase.co';
+  static const supaBaseUrl = 'https://kgsnuymmuvzdmkqsybkp.supabase.co';
   static const supaBaseAnonKey =
-      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imxidm1mdXFodXFsenpobWp5bWFlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjU5ODc4MTUsImV4cCI6MjA0MTU2MzgxNX0.ZswOx78sz4XHJ38Zu2jW9USmDyfVinEWSRqldxULTBU';
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imtnc251eW1tdXZ6ZG1rcXN5YmtwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjUwMTE2NTIsImV4cCI6MjA0MDU4NzY1Mn0.TKmy2d60GzARlMYH6SPpM1za-wuFNJgCTafnlGMVpgI';
 }

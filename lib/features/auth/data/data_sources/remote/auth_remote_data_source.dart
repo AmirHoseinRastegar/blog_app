@@ -3,7 +3,7 @@ import 'package:blog_app/features/auth/data/models/user_model.dart';
 import 'package:supabase/supabase.dart';
 
 abstract interface class AuthRemoteDataSource {
-  Future<UserModel> signUp(String name, String email, String password);
+  Future<UserModel> signUp({required String name, required String email, required String password});
 
   Future<UserModel> signIn(String email, String password);
 }
@@ -14,10 +14,13 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   AuthRemoteDataSourceImpl({required this.client});
 
   @override
-  Future<UserModel> signUp(String name, String email, String password) async {
+  Future<UserModel> signUp({required String name,required String email, required String password}) async {
     try {
-      final response = await client.auth
-          .signUp(password: password, email: email, data: {'name': name});
+      final response = await client.auth.signUp(
+        password: password,
+        email: email,
+        data: {'name': name},
+      );
       if (response.user == null) {
         throw ServerException('User is null');
       }

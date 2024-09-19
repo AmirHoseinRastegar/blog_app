@@ -47,76 +47,79 @@ class _LoginScreenState extends State<LoginScreen> {
               if (state is AuthError) {
                 return snakBar(context, state.message);
               } else if (state is AuthSuccess) {
-                Navigator.pushReplacement(context, BlogScreen.route());
+                Navigator.pushAndRemoveUntil(context, BlogScreen.rout(),(route) => false,);
               }
             },
             builder: (context, state) {
               if (state is AuthLoading) {
                 return const AppLoader();
               }
-              return SingleChildScrollView(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Text(
-                      'Login',
-                      style:
-                          TextStyle(fontSize: 50, fontWeight: FontWeight.bold),
-                    ),
-                    const SizedBox(
-                      height: 30,
-                    ),
-                    CustomTextField(
-                        hintText: 'email', controller: _emailController),
-                    const SizedBox(
-                      height: 15,
-                    ),
-                    CustomTextField(
-                        hintText: 'Password', controller: _passwordController),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    CustomButton(
-                        title: 'Login',
-                        onPressed: () {
-                          if (formKey.currentState!.validate()) {
-
-                              context.read<AuthBloc>().add(
-                                    AuthLoginEvent(
-                                      email: _emailController.text.trim(),
-                                      password: _passwordController.text.trim(),
-                                    ),
-                                  );
-                            }
-
-                        }),
-                    const SizedBox(
-                      height: 330,
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        Navigator.pushReplacement(context, SignUpScreen.rout());
-                      },
-                      child: RichText(
-                        text: TextSpan(
-                          text: 'Don\'t have an account?  ',
-                          style: Theme.of(context).textTheme.titleMedium,
-                          children: [
-                            TextSpan(
-                              text: 'Register',
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .titleMedium!
-                                  .copyWith(
-                                      color: Pallet.gradient2,
-                                      fontWeight: FontWeight.bold),
-                            ),
-                          ],
-                        ),
+              return Form(
+                key: formKey,
+                child: SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Text(
+                        'Login',
+                        style:
+                            TextStyle(fontSize: 50, fontWeight: FontWeight.bold),
                       ),
-                    )
-                  ],
+                      const SizedBox(
+                        height: 30,
+                      ),
+                      CustomTextField(
+                          hintText: 'email', controller: _emailController),
+                      const SizedBox(
+                        height: 15,
+                      ),
+                      CustomTextField(
+                          hintText: 'Password', controller: _passwordController),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      CustomButton(
+                          title: 'Login',
+                          onPressed: () {
+                            if (formKey.currentState!.validate()) {
+
+                                context.read<AuthBloc>().add(
+                                      AuthLoginEvent(
+                                        email: _emailController.text.trim(),
+                                        password: _passwordController.text.trim(),
+                                      ),
+                                    );
+                              }
+
+                          }),
+                      const SizedBox(
+                        height: 330,
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.pushReplacement(context, SignUpScreen.rout());
+                        },
+                        child: RichText(
+                          text: TextSpan(
+                            text: 'Don\'t have an account?  ',
+                            style: Theme.of(context).textTheme.titleMedium,
+                            children: [
+                              TextSpan(
+                                text: 'Register',
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .titleMedium!
+                                    .copyWith(
+                                        color: Pallet.gradient2,
+                                        fontWeight: FontWeight.bold),
+                              ),
+                            ],
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
                 ),
               );
             },

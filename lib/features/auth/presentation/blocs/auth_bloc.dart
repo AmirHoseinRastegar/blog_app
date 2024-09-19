@@ -14,8 +14,9 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final LoginUseCase loginUseCase;
 
   AuthBloc(this.signUpUseCase, this.loginUseCase) : super(AuthInitial()) {
-    on<AuthEvent>((event, emit) => emit(AuthLoading()));
+    on<AuthEvent>((_, emit) => emit(AuthLoading()));
     on<AuthSignUpEvent>(_onSignUp);
+    on<AuthLoginEvent>(_onLogin);
   }
 
   void _onSignUp(AuthSignUpEvent event, Emitter<AuthState> emit) async {
@@ -23,7 +24,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       SignUpParams(
           name: event.name, email: event.email, password: event.password),
     );
-
     user.fold(
       (l) => emit(
         AuthError(l.message),
@@ -34,8 +34,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     );
   }
 
-  void _onLogin(AuthLoginEvent event, Emitter<AuthState> emit) async{
-    final user =await  loginUseCase.call(
+  void _onLogin(AuthLoginEvent event, Emitter<AuthState> emit) async {
+    final user = await loginUseCase.call(
       LoginParams(email: event.email, password: event.password),
     );
     user.fold(

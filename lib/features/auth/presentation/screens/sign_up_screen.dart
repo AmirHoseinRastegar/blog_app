@@ -3,6 +3,7 @@ import 'package:blog_app/core/utils/snakbar.dart';
 import 'package:blog_app/features/auth/presentation/screens/login_screen.dart';
 import 'package:blog_app/features/auth/presentation/widgets/custom_button.dart';
 import 'package:blog_app/features/auth/presentation/widgets/custom_text_field.dart';
+import 'package:blog_app/features/blog/presentation/screens/blog_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -49,7 +50,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 return snakBar(context, state.message);
               } else if (state is AuthSuccess) {
                 Navigator.pushAndRemoveUntil(
-                    context, SignUpScreen.rout(), (route) => false);
+                    context, BlogScreen.rout(), (route) => false);
               }
             },
             builder: (context, state) {

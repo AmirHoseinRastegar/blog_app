@@ -5,7 +5,7 @@ import '../../../../core/error/failure.dart';
 
 abstract interface class AuthRepository {
   Future<Either<Failure, UserEntity>> signUp(
-      String name, String email, String password);
+      {required String name, required String email, required String password});
 
   Future<Either<Failure, UserEntity>> signIn(String email, String password);
 }

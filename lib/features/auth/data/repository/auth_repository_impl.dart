@@ -13,9 +13,10 @@ class AuthRepositoryImpl implements AuthRepository {
 
   @override
   Future<Either<Failure, UserEntity>> signUp(
-      String name, String email, String password) async {
+      {required String name,required String email, required String password}) async {
     try {
-      final response = await remoteDataSource.signUp(name, email, password);
+      final response = await remoteDataSource.signUp(
+          name: name, email: email, password: password);
       return right(response);
     } on ServerException catch (e) {
       return Left(Failure(e.message));
@@ -23,10 +24,10 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
-  Future<Either<Failure, UserEntity>> signIn(String email, String password) async{
-
+  Future<Either<Failure, UserEntity>> signIn(
+      String email, String password) async {
     try {
-      final response =await remoteDataSource.signIn(email, password);
+      final response = await remoteDataSource.signIn(email, password);
       return right(response);
     } on ServerException catch (e) {
       return Left(Failure(e.message));
