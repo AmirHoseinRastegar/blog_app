@@ -3,9 +3,14 @@ import 'package:blog_app/features/auth/data/models/user_model.dart';
 import 'package:supabase/supabase.dart';
 
 abstract interface class AuthRemoteDataSource {
-  Future<UserModel> signUp({required String name, required String email, required String password});
+  Session? get currentUserSession;
+
+  Future<UserModel> signUp(
+      {required String name, required String email, required String password});
 
   Future<UserModel> signIn(String email, String password);
+
+  Future<UserModel?> getCurrentUser();
 }
 
 class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
@@ -14,7 +19,10 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   AuthRemoteDataSourceImpl({required this.client});
 
   @override
-  Future<UserModel> signUp({required String name,required String email, required String password}) async {
+  Future<UserModel> signUp(
+      {required String name,
+      required String email,
+      required String password}) async {
     try {
       final response = await client.auth.signUp(
         password: password,
@@ -41,6 +49,27 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
       }
 
       return UserModel.fromJson(response.user!.toJson());
+    } catch (e) {
+      throw ServerException(e.toString());
+    }
+  }
+
+  @override
+  Session? get currentUserSession => client.auth.currentSession;
+
+  @override
+  Future<UserModel?> getCurrentUser() async {
+    try {
+      if (currentUserSession != null) {
+        final userData = await client
+            .from('profiles')
+            .select()
+            .eq('id', currentUserSession!.user.id);
+        return UserModel.fromJson(userData.first).copyWith(
+          email: currentUserSession!.user.email,
+        );
+      }
+      return null;
     } catch (e) {
       throw ServerException(e.toString());
     }

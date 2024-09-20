@@ -10,3 +10,5 @@ class UserEntity{
     required this.email
   });
 }
+
+class NoParams{}

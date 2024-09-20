@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../core/constants/loading.dart';
+import '../../../../core/cubit/toggle_password_obsecure_cubit/obsecure_password_cubit.dart';
 import '../../../../core/theme/pallet.dart';
 import '../../../../core/utils/snakbar.dart';
 import '../blocs/auth_bloc.dart';
@@ -47,7 +48,11 @@ class _LoginScreenState extends State<LoginScreen> {
               if (state is AuthError) {
                 return snakBar(context, state.message);
               } else if (state is AuthSuccess) {
-                Navigator.pushAndRemoveUntil(context, BlogScreen.rout(),(route) => false,);
+                Navigator.pushAndRemoveUntil(
+                  context,
+                  BlogScreen.rout(),
+                  (route) => false,
+                );
               }
             },
             builder: (context, state) {
@@ -63,19 +68,39 @@ class _LoginScreenState extends State<LoginScreen> {
                     children: [
                       const Text(
                         'Login',
-                        style:
-                            TextStyle(fontSize: 50, fontWeight: FontWeight.bold),
+                        style: TextStyle(
+                            fontSize: 50, fontWeight: FontWeight.bold),
                       ),
                       const SizedBox(
                         height: 30,
                       ),
                       CustomTextField(
-                          hintText: 'email', controller: _emailController),
+                        hintText: 'email',
+                        controller: _emailController,
+                        isObscured: false,
+                      ),
                       const SizedBox(
                         height: 15,
                       ),
-                      CustomTextField(
-                          hintText: 'Password', controller: _passwordController),
+                      BlocBuilder<ObscurePasswordCubit, bool>(
+                        builder: (context, state) {
+                          return CustomTextField(
+                            hintText: 'Password',
+                            controller: _passwordController,
+                            isObscured: !state,
+                            icon: IconButton(
+                              onPressed: () {
+                                context
+                                    .read<ObscurePasswordCubit>()
+                                    .isObscuredPassword(state);
+                              },
+                              icon: state == false
+                                  ? const Icon(Icons.visibility)
+                                  : const Icon(Icons.visibility_off),
+                            ),
+                          );
+                        },
+                      ),
                       const SizedBox(
                         height: 20,
                       ),
@@ -83,22 +108,21 @@ class _LoginScreenState extends State<LoginScreen> {
                           title: 'Login',
                           onPressed: () {
                             if (formKey.currentState!.validate()) {
-
-                                context.read<AuthBloc>().add(
-                                      AuthLoginEvent(
-                                        email: _emailController.text.trim(),
-                                        password: _passwordController.text.trim(),
-                                      ),
-                                    );
-                              }
-
+                              context.read<AuthBloc>().add(
+                                    AuthLoginEvent(
+                                      email: _emailController.text.trim(),
+                                      password: _passwordController.text.trim(),
+                                    ),
+                                  );
+                            }
                           }),
                       const SizedBox(
                         height: 330,
                       ),
                       GestureDetector(
                         onTap: () {
-                          Navigator.pushReplacement(context, SignUpScreen.rout());
+                          Navigator.pushReplacement(
+                              context, SignUpScreen.rout());
                         },
                         child: RichText(
                           text: TextSpan(

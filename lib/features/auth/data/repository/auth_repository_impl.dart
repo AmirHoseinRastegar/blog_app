@@ -13,7 +13,9 @@ class AuthRepositoryImpl implements AuthRepository {
 
   @override
   Future<Either<Failure, UserEntity>> signUp(
-      {required String name,required String email, required String password}) async {
+      {required String name,
+      required String email,
+      required String password}) async {
     try {
       final response = await remoteDataSource.signUp(
           name: name, email: email, password: password);
@@ -31,6 +33,19 @@ class AuthRepositoryImpl implements AuthRepository {
       return right(response);
     } on ServerException catch (e) {
       return Left(Failure(e.message));
+    }
+  }
+
+  @override
+  Future<Either<Failure, UserEntity>> getCurrentUser() async {
+    try {
+      final session = remoteDataSource.currentUserSession;
+      return Right(
+        UserEntity(
+            id: session!.user.id, name: '', email: session.user.email ?? ''),
+      );
+    } catch (e) {
+      return Left(Failure(e.toString()));
     }
   }
 }

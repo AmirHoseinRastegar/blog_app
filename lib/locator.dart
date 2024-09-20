@@ -10,6 +10,8 @@ import 'package:supabase/supabase.dart';
 import 'core/constants/supabase_config.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
+import 'core/cubit/toggle_password_obsecure_cubit/obsecure_password_cubit.dart';
+
 final locator = GetIt.instance;
 
 Future<void> setupLocator() async {
@@ -50,6 +52,11 @@ void _onAuthLocators() {
     () => AuthBloc(
       locator(),
       locator(),
+    ),
+  );
+  locator.registerLazySingleton<ObscurePasswordCubit>(
+    () => ObscurePasswordCubit(
+
     ),
   );
 

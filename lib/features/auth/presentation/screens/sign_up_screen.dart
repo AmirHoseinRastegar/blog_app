@@ -6,8 +6,10 @@ import 'package:blog_app/features/auth/presentation/widgets/custom_text_field.da
 import 'package:blog_app/features/blog/presentation/screens/blog_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../core/cubit/toggle_password_obsecure_cubit/obsecure_password_cubit.dart';
 import '../../../../core/theme/pallet.dart';
 import '../../../../core/widgets/custom_app_bar.dart';
 import '../blocs/auth_bloc.dart';
@@ -73,24 +75,39 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         height: 30,
                       ),
                       CustomTextField(
-                          hintText: 'Name', controller: _nameController),
+                          hintText: 'Name', controller: _nameController, isObscured: false,),
                       const SizedBox(
                         height: 15,
                       ),
                       CustomTextField(
-                          hintText: 'email', controller: _emailController),
+                          hintText: 'email', controller: _emailController, isObscured: false,),
                       const SizedBox(
                         height: 15,
                       ),
-                      CustomTextField(
-                          hintText: 'Password',
-                          controller: _passwordController),
+                      BlocBuilder<ObscurePasswordCubit, bool>(
+                        builder: (context, state) {
+                          return CustomTextField(
+                           
+                            hintText: 'Password',
+                            controller: _passwordController,
+                            icon: IconButton(
+                                onPressed: () {
+                                  context
+                                      .read<ObscurePasswordCubit>()
+                                      .isObscuredPassword(state);
+                                },
+                                icon: state==false? const Icon(Icons.visibility_off):
+                            const Icon(Icons.visibility)
+
+                            ), isObscured: state,
+                          );
+                        },
+                      ),
                       const SizedBox(
                         height: 20,
                       ),
                       CustomButton(
                           title: 'Sign Up',
-
                           onPressed: () {
                             if (formKey.currentState!.validate()) {
                               context.read<AuthBloc>().add(
@@ -107,7 +124,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       ),
                       GestureDetector(
                         onTap: () {
-                          Navigator.pushReplacement(context, LoginScreen.rout());
+                          Navigator.pushReplacement(
+                              context, LoginScreen.rout());
                         },
                         child: RichText(
                           text: TextSpan(
