@@ -39,11 +39,11 @@ class AuthRepositoryImpl implements AuthRepository {
   @override
   Future<Either<Failure, UserEntity>> getCurrentUser() async {
     try {
-      final session = remoteDataSource.currentUserSession;
-      return Right(
-        UserEntity(
-            id: session!.user.id, name: '', email: session.user.email ?? ''),
-      );
+      final session = await remoteDataSource.getCurrentUserSession();
+      if (session == null) {
+        return left(Failure('user not logged in'));
+      }
+      return right(session);
     } catch (e) {
       return Left(Failure(e.toString()));
     }
