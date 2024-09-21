@@ -20,3 +20,5 @@ class AuthLoginEvent extends AuthEvent {
 
   AuthLoginEvent({required this.email, required this.password});
 }
+
+class IsUserLoggedInEvent extends AuthEvent {}

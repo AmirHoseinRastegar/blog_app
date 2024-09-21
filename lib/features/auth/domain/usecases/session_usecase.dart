@@ -6,10 +6,10 @@ import '../../../../core/usecase/interface_usecase.dart';
 import '../entities/auth_user_entity.dart';
 import '../repository/auth_repository.dart';
 
-class SignUpUseCase implements UseCase<UserEntity, NoParams> {
+class SessionUseCase implements UseCase<UserEntity, NoParams> {
   final AuthRepository repository;
 
-  SignUpUseCase({required this.repository});
+  SessionUseCase({required this.repository});
 
   @override
   Future<Either<Failure, UserEntity>> call(NoParams params) async {

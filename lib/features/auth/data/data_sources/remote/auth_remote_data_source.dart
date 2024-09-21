@@ -10,7 +10,7 @@ abstract interface class AuthRemoteDataSource {
 
   Future<UserModel> signIn(String email, String password);
 
-  Future<UserModel?> getCurrentUser();
+  Future<UserModel?> getCurrentUserSession();
 }
 
 class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
@@ -58,7 +58,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   Session? get currentUserSession => client.auth.currentSession;
 
   @override
-  Future<UserModel?> getCurrentUser() async {
+  Future<UserModel?> getCurrentUserSession() async {
     try {
       if (currentUserSession != null) {
         final userData = await client

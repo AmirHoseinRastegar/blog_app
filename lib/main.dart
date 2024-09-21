@@ -1,9 +1,12 @@
+import 'package:blog_app/core/cubit/presist_user_login_cubit/persist_login_cubit.dart';
 import 'package:blog_app/features/auth/presentation/screens/sign_up_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'core/cubit/toggle_password_obsecure_cubit/obsecure_password_cubit.dart';
 import 'core/theme/theme.dart';
 import 'features/auth/presentation/blocs/auth_bloc.dart';
+import 'features/auth/presentation/screens/login_screen.dart';
+import 'features/blog/presentation/screens/blog_screen.dart';
 import 'locator.dart';
 
 void main() async {
@@ -14,9 +17,12 @@ void main() async {
       BlocProvider(
 
         create: (context) => locator<AuthBloc>(),
-      ),  BlocProvider(
+      ), BlocProvider(
 
         create: (context) => locator<ObscurePasswordCubit>(),
+      ), BlocProvider(
+
+        create: (context) => locator<PersistLoginCubit>(),
       ),
     ],
     child: const MyApp(),
@@ -32,12 +38,30 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   @override
+  void initState() {
+    super.initState();
+    context.read<AuthBloc>().add(IsUserLoggedInEvent());
+  }
+
+  @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: AppTheme.darkTheme,
-      home: const SignUpScreen(),
+      home: BlocSelector<PersistLoginCubit, PersistLoginState, bool>(
+        selector: (state) {
+          return state is PersistLoginCubit;
+        },
+        builder: (context, isLoggedIn) {
+          if(isLoggedIn) {
+            return const BlogScreen();
+          }else{
+            return const LoginScreen();
+
+          }
+        },
+      ),
     );
   }
 }
