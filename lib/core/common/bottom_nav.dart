@@ -44,7 +44,7 @@ class _BottomNavState extends State<BottomNav> {
                             curve: Curves.easeInOut);
                       },
                       icon:
-                      state==0?const Icon(Icons.home):const Icon(Icons.home_filled),),
+                      state==0?const Icon(Icons.home_filled):const Icon(Icons.home_outlined),),
 
                 ],
               ),

@@ -4,6 +4,7 @@ import 'package:blog_app/test.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../core/common/bottom_navigation.dart';
 import '../../../profile/presentation/screens/profile_screen.dart';
 
 class BlogScreen extends StatelessWidget {
@@ -25,15 +26,10 @@ class BlogScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        bottomNavigationBar: BottomNav(
-          controller: controller,
-        ),
-        body: PageView(
-          controller: controller,
+        bottomNavigationBar: const BottomNavBar(),
+        body: IndexedStack(
+          index:  BlocProvider.of<BottomNavCubit>(context).selectedIndex,
           children: screens,
-          onPageChanged: (value){
-             BlocProvider.of<BottomNavCubit>(context).changeIndex(value);
-          },
         ),
       ),
     );
