@@ -5,6 +5,7 @@ import 'package:blog_app/features/auth/domain/usecases/auth_signin_usecase.dart'
 import 'package:blog_app/features/auth/domain/usecases/auth_signup_usecase.dart';
 import 'package:blog_app/features/auth/domain/usecases/session_usecase.dart';
 import 'package:blog_app/features/auth/presentation/blocs/auth_bloc.dart';
+import 'package:blog_app/features/profile/presentation/bloc/bottom_nav_cubit.dart';
 import 'package:get_it/get_it.dart';
 import 'package:supabase/supabase.dart';
 
@@ -41,14 +42,18 @@ void _onAuthLocators() {
       locator(),
     ),
   );
+  locator.registerFactory(
+    () => BottomNavCubit(),
+  );
 
   locator.registerFactory(
     () => LoginUseCase(
       locator(),
     ),
-  );  locator.registerFactory(
+  );
+  locator.registerFactory(
     () => SessionUseCase(
-       repository: locator(),
+      repository: locator(),
     ),
   );
 
