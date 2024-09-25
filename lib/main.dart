@@ -6,7 +6,7 @@ import 'core/cubit/toggle_password_obsecure_cubit/obsecure_password_cubit.dart';
 import 'core/theme/theme.dart';
 import 'features/auth/presentation/blocs/auth_bloc.dart';
 import 'features/auth/presentation/screens/login_screen.dart';
-import 'features/blog/presentation/screens/blog_screen.dart';
+import 'main_wrapper.dart';
 import 'locator.dart';
 
 void main() async {
@@ -57,7 +57,7 @@ class _MyAppState extends State<MyApp> {
           },
           builder: (context, isLoggedIn) {
             if (isLoggedIn) {
-              return BlogScreen();
+              return MainWrapper();
             } else {
               return const LoginScreen();
             }

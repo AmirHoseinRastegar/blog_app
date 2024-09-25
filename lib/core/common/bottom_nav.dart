@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../features/profile/presentation/bloc/bottom_nav_cubit.dart';
 import '../../features/profile/presentation/screens/profile_screen.dart';
-import '../../test.dart';
+import '../../features/blog/presentation/screens/blog_screen.dart';
 
 class BottomNav extends StatefulWidget {
   final PageController controller;

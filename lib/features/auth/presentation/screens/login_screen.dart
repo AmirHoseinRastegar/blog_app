@@ -2,7 +2,7 @@ import 'package:blog_app/core/widgets/custom_app_bar.dart';
 import 'package:blog_app/features/auth/presentation/screens/sign_up_screen.dart';
 import 'package:blog_app/features/auth/presentation/widgets/custom_button.dart';
 import 'package:blog_app/features/auth/presentation/widgets/custom_text_field.dart';
-import 'package:blog_app/features/blog/presentation/screens/blog_screen.dart';
+import 'package:blog_app/main_wrapper.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -50,7 +50,7 @@ class _LoginScreenState extends State<LoginScreen> {
               } else if (state is AuthSuccess) {
                 Navigator.pushAndRemoveUntil(
                   context,
-                  BlogScreen.rout(),
+                  MainWrapper.rout(),
                   (route) => false,
                 );
               }
