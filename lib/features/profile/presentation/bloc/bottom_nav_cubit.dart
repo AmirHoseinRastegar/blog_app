@@ -5,6 +5,8 @@ class BottomNavCubit extends Cubit<int> {
   int selectedIndex = 0;
 
   void changeIndex(int index) {
+
+
     emit(selectedIndex = index);
   }
 }

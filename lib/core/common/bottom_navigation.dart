@@ -1,5 +1,5 @@
+import 'package:blog_app/features/blog/presentation/screens/home_screen.dart';
 import 'package:blog_app/features/profile/presentation/screens/profile_screen.dart';
-import 'package:blog_app/features/blog/presentation/screens/blog_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -16,8 +16,8 @@ class BottomNavBar extends StatefulWidget {
 
 class _BottomNavBarState extends State<BottomNavBar> {
   List<Widget> screens = [
-    const ProfileScreen(),
-    const TestScreen(),
+    const HomeScreen(),
+    const HomeScreen(),
   ];
 
   @override
@@ -34,6 +34,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
               showUnselectedLabels: true,
               items: const [
                 BottomNavigationBarItem(
+
                     icon: Icon(Icons.home_outlined),
                     label: 'خانه',
                     activeIcon: Icon(Icons.home)),

@@ -1,35 +1,65 @@
-import 'package:blog_app/core/common/bottom_nav.dart';
-import 'package:blog_app/features/profile/presentation/bloc/bottom_nav_cubit.dart';
-import 'package:blog_app/features/blog/presentation/screens/blog_screen.dart';
+
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter/services.dart';
 
-import 'core/common/bottom_navigation.dart';
 import 'features/profile/presentation/screens/profile_screen.dart';
+import 'features/blog/presentation/screens/home_screen.dart';
 
-class MainWrapper extends StatelessWidget {
-  static rout() => MaterialPageRoute(builder: (context) => MainWrapper());
+class MainWrapper2 extends StatefulWidget {
+  static rout() => MaterialPageRoute(builder: (context) => MainWrapper2());
 
-  MainWrapper({super.key});
+  const MainWrapper2({super.key});
 
-  final PageController controller = PageController();
+  @override
+  State<MainWrapper2> createState() => _MainWrapper2State();
+}
 
-  final List<Widget> screens = [
-    const ProfileScreen(
-      title: 'hello',
-    ),
-    const TestScreen()
-    // const BlogScreen(),
+const homeIndex = 0;
+const profileIndex = 1;
+
+class _MainWrapper2State extends State<MainWrapper2> {
+  List<GlobalKey<NavigatorState>> _navigatorKeys = [
+    homeKey,
+    profileKey,
   ];
+  Future<bool> onPopInvoked(bool didPop) {
+    if (_navigatorKeys[selectedIndex].currentState!.canPop()) {
+      _navigatorKeys[selectedIndex]
+          .currentState!
+          .pop(_navigatorKeys[selectedIndex].currentContext);
+    } else {
+      SystemChannels.platform.invokeMethod<void>('SystemNavigator.pop');
+    }
+    return Future.value(false);
+  }
+
+  int selectedIndex = homeIndex;
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
+    return PopScope(
+      canPop: false,
+      onPopInvoked:onPopInvoked ,
       child: Scaffold(
-        bottomNavigationBar: const BottomNavBar(),
         body: IndexedStack(
-          index:  BlocProvider.of<BottomNavCubit>(context).selectedIndex,
-          children: screens,
+          index: selectedIndex,
+          children: const [
+             HomeScreen(),
+            ProfileScreen(),
+          ],
+        ),
+        bottomNavigationBar: BottomNavigationBar(
+          currentIndex: selectedIndex,
+          selectedItemColor: Colors.red,
+          items: const [
+            BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
+            BottomNavigationBarItem(icon: Icon(Icons.person), label: 'profile'),
+          ],
+          onTap: (index) {
+            setState(() {
+              selectedIndex = index;
+            });
+          },
         ),
       ),
     );
