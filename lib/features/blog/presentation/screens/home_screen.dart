@@ -1,7 +1,8 @@
-
 import 'package:blog_app/features/blog/presentation/screens/blog_details_screen.dart';
 import 'package:blog_app/features/blog/presentation/screens/main_blog_screen.dart';
 import 'package:flutter/material.dart';
+
+import 'add_blogs_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   final String? title;
@@ -28,6 +29,8 @@ class _HomeScreenState extends State<HomeScreen> {
                 return const MainBlogScreen();
               case '/details_screen':
                 return const BlogDetailsScreen();
+              case '/add_blog':
+                return const AddBlogsScreen();
             }
             return Container();
           },

@@ -6,7 +6,7 @@ import 'features/profile/presentation/screens/profile_screen.dart';
 import 'features/blog/presentation/screens/home_screen.dart';
 
 class MainWrapper2 extends StatefulWidget {
-  static rout() => MaterialPageRoute(builder: (context) => MainWrapper2());
+  static rout() => MaterialPageRoute(builder: (context) => const MainWrapper2());
 
   const MainWrapper2({super.key});
 
@@ -18,7 +18,7 @@ const homeIndex = 0;
 const profileIndex = 1;
 
 class _MainWrapper2State extends State<MainWrapper2> {
-  List<GlobalKey<NavigatorState>> _navigatorKeys = [
+  final List<GlobalKey<NavigatorState>> _navigatorKeys = [
     homeKey,
     profileKey,
   ];

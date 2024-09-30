@@ -1,3 +1,4 @@
+import 'package:blog_app/core/connection_checker/connection_checker.dart';
 import 'package:blog_app/features/auth/data/data_sources/remote/auth_remote_data_source.dart';
 import 'package:blog_app/features/auth/data/repository/auth_repository_impl.dart';
 import 'package:blog_app/features/auth/domain/repository/auth_repository.dart';
@@ -5,8 +6,14 @@ import 'package:blog_app/features/auth/domain/usecases/auth_signin_usecase.dart'
 import 'package:blog_app/features/auth/domain/usecases/auth_signup_usecase.dart';
 import 'package:blog_app/features/auth/domain/usecases/session_usecase.dart';
 import 'package:blog_app/features/auth/presentation/blocs/auth_bloc.dart';
+import 'package:blog_app/features/blog/data/data_source/blog_data_source.dart';
+import 'package:blog_app/features/blog/data/repository/blog_repository_impl.dart';
+import 'package:blog_app/features/blog/domain/repository/blog_repository.dart';
+import 'package:blog_app/features/blog/domain/usecases/upload_blog_usecase.dart';
+import 'package:blog_app/features/blog/presentation/bloc/blog_bloc/blog_bloc.dart';
 import 'package:blog_app/features/profile/presentation/bloc/bottom_nav_cubit.dart';
 import 'package:get_it/get_it.dart';
+import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
 import 'package:supabase/supabase.dart';
 
 import 'core/constants/supabase_config.dart';
@@ -23,6 +30,9 @@ Future<void> setupLocator() async {
     anonKey: Constants.supaBaseAnonKey,
   );
   locator.registerLazySingleton(() => supabaseClient.client);
+  locator.registerFactory(() => InternetConnection());
+
+  locator.registerLazySingleton(() => ConnectionCheckerImpl(locator()));
   _onAuthLocators();
 }
 
@@ -56,12 +66,30 @@ void _onAuthLocators() {
       repository: locator(),
     ),
   );
+  locator.registerFactory<BlogDataSource>(
+    () => BlogDataSourceImpl(
+      client: locator(),
+    ),
+  );
+  locator.registerFactory<BlogRepository>(
+    () => BlogRepositoryImpl(locator(), locator()),
+  );
+  locator.registerFactory(
+    () => UploadBlogUseCase(
+      locator(),
+    ),
+  );
 
   locator.registerFactory(
     () => AuthBloc(
       locator(),
       locator(),
       locator(),
+      locator(),
+    ),
+  );
+  locator.registerFactory(
+    () => BlogBloc(
       locator(),
     ),
   );
