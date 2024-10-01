@@ -76,7 +76,28 @@ class _AddBlogsScreenState extends State<AddBlogsScreen> {
           child: Form(
             key: _formKey,
             child: Column(
-              children: [],
+              children: [
+                image != null
+                    ? GestureDetector(
+                        onTap: pickImage,
+                        child: SizedBox(
+                          height: 150,
+                          width: double.infinity,
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(12),
+                            child: Image.file(
+                              image!,
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                        ),
+                      )
+                    : GestureDetector(
+                  onTap: (){
+                    pickImage();
+                  },
+                )
+              ],
             ),
           ),
         ),
