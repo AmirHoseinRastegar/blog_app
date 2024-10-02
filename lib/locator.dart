@@ -14,7 +14,6 @@ import 'package:blog_app/features/blog/presentation/bloc/blog_bloc/blog_bloc.dar
 import 'package:blog_app/features/profile/presentation/bloc/bottom_nav_cubit.dart';
 import 'package:get_it/get_it.dart';
 import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
-import 'package:supabase/supabase.dart';
 
 import 'core/constants/supabase_config.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -32,7 +31,7 @@ Future<void> setupLocator() async {
   locator.registerLazySingleton(() => supabaseClient.client);
   locator.registerFactory(() => InternetConnection());
 
-  locator.registerLazySingleton(() => ConnectionCheckerImpl(locator()));
+  locator.registerLazySingleton<ConnectionChecker>(() => ConnectionCheckerImpl(locator()));
   _onAuthLocators();
 }
 

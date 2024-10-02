@@ -5,6 +5,10 @@ import 'package:flutter/material.dart';
 class MainBlogScreen extends StatefulWidget {
   const MainBlogScreen({super.key});
 
+  static rout() => MaterialPageRoute(
+        builder: (context) => const MainBlogScreen(),
+      );
+
   @override
   State<MainBlogScreen> createState() => _MainBlogScreenState();
 }

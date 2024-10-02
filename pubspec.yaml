@@ -48,6 +48,7 @@ dependencies:
   internet_connection_checker_plus:
   uuid: ^4.5.1
   image_picker: ^1.1.2
+  dotted_border: ^2.1.0
 dev_dependencies:
   flutter_test:
     sdk: flutter

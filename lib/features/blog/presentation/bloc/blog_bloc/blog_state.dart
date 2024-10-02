@@ -11,4 +11,8 @@ final class BlogUploadSuccess extends BlogState {}
 
 final class BlogGetAllBlogsSuccess extends BlogState {}
 
-final class BlogError extends BlogState {}
+final class BlogError extends BlogState {
+
+  final String message;
+  BlogError({required this.message});
+}
