@@ -107,7 +107,7 @@ class _AddBlogsScreenState extends State<AddBlogsScreen> {
                                 borderRadius: BorderRadius.circular(12),
                                 child: Image.file(
                                   image!,
-                                  fit: BoxFit.cover,
+                                  fit: BoxFit.fitHeight,
                                 ),
                               ),
                             ),

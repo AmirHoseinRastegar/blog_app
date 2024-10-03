@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -6,7 +5,8 @@ import 'features/profile/presentation/screens/profile_screen.dart';
 import 'features/blog/presentation/screens/home_screen.dart';
 
 class MainWrapper2 extends StatefulWidget {
-  static rout() => MaterialPageRoute(builder: (context) => const MainWrapper2());
+  static rout() =>
+      MaterialPageRoute(builder: (context) => const MainWrapper2());
 
   const MainWrapper2({super.key});
 
@@ -18,15 +18,24 @@ const homeIndex = 0;
 const profileIndex = 1;
 
 class _MainWrapper2State extends State<MainWrapper2> {
+  final List<int> history = [];
+
   final List<GlobalKey<NavigatorState>> _navigatorKeys = [
     homeKey,
     profileKey,
   ];
+
   Future<bool> onPopInvoked(bool didPop) {
     if (_navigatorKeys[selectedIndex].currentState!.canPop()) {
       _navigatorKeys[selectedIndex]
           .currentState!
           .pop(_navigatorKeys[selectedIndex].currentContext);
+    } else if (history.isNotEmpty) {
+      setState(() {
+        selectedIndex = history.last;
+      });
+      history.removeLast();
+      false;
     } else {
       SystemChannels.platform.invokeMethod<void>('SystemNavigator.pop');
     }
@@ -39,12 +48,12 @@ class _MainWrapper2State extends State<MainWrapper2> {
   Widget build(BuildContext context) {
     return PopScope(
       canPop: false,
-      onPopInvoked:onPopInvoked ,
+      onPopInvoked: onPopInvoked,
       child: Scaffold(
         body: IndexedStack(
           index: selectedIndex,
           children: const [
-             HomeScreen(),
+            HomeScreen(),
             ProfileScreen(),
           ],
         ),
@@ -57,6 +66,8 @@ class _MainWrapper2State extends State<MainWrapper2> {
           ],
           onTap: (index) {
             setState(() {
+              history.remove(selectedIndex);
+              history.add(selectedIndex);
               selectedIndex = index;
             });
           },
