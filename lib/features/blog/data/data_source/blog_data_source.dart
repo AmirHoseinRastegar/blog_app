@@ -8,6 +8,8 @@ import '../models/blog_model.dart';
 abstract class BlogDataSource {
   Future<BlogModel> uploadBlogs(BlogModel blogModel);
 
+  Future<List<BlogModel>> getAllBlogs();
+
   Future<String> getImageUrl(
     BlogModel blogModel,
     File path,
@@ -41,12 +43,26 @@ class BlogDataSourceImpl implements BlogDataSource {
   @override
   Future<String> getImageUrl(BlogModel blogModel, File path) async {
     try {
-      final response = await client.storage.from('blogs').upload(
+      final response = await client.storage.from('blog_image').upload(
             blogModel.id,
             path,
           );
-      final url = client.storage.from('blogs').getPublicUrl(blogModel.id);
+      final url = client.storage.from('blog_image').getPublicUrl(blogModel.id);
       return url;
+    } catch (e) {
+      throw ServerException(e.toString());
+    }
+  }
+
+  @override
+  Future<List<BlogModel>> getAllBlogs() async {
+    try {
+      final blogs = await client.from('blogs').select('*,profiles(name)');
+
+      return blogs
+          .map((blog) =>
+              BlogModel.fromJson(blog).copyWith(name: blog['profiles']['name']))
+          .toList();
     } catch (e) {
       throw ServerException(e.toString());
     }

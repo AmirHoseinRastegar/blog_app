@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:blog_app/core/connection_checker/connection_checker.dart';
+import 'package:blog_app/core/error/server_exception.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:uuid/uuid.dart';
 
@@ -50,8 +51,12 @@ class BlogRepositoryImpl implements BlogRepository {
   }
 
   @override
-  Future<Either<Failure, List<BlogEntity>>> getAllBlogs() {
-    // TODO: implement getAllBlogs
-    throw UnimplementedError();
+  Future<Either<Failure, List<BlogEntity>>> getAllBlogs() async {
+    try {
+      final getALlBlogs = await dataSource.getAllBlogs();
+      return Right(getALlBlogs);
+    } on ServerException catch (e) {
+      return Left(Failure(e.message));
+    }
   }
 }
