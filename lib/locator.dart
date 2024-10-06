@@ -9,6 +9,7 @@ import 'package:blog_app/features/auth/presentation/blocs/auth_bloc.dart';
 import 'package:blog_app/features/blog/data/data_source/blog_data_source.dart';
 import 'package:blog_app/features/blog/data/repository/blog_repository_impl.dart';
 import 'package:blog_app/features/blog/domain/repository/blog_repository.dart';
+import 'package:blog_app/features/blog/domain/usecases/get_all_blogs_usecase.dart';
 import 'package:blog_app/features/blog/domain/usecases/upload_blog_usecase.dart';
 import 'package:blog_app/features/blog/presentation/bloc/blog_bloc/blog_bloc.dart';
 import 'package:blog_app/features/profile/presentation/bloc/bottom_nav_cubit.dart';
@@ -31,7 +32,8 @@ Future<void> setupLocator() async {
   locator.registerLazySingleton(() => supabaseClient.client);
   locator.registerFactory(() => InternetConnection());
 
-  locator.registerLazySingleton<ConnectionChecker>(() => ConnectionCheckerImpl(locator()));
+  locator.registerLazySingleton<ConnectionChecker>(
+      () => ConnectionCheckerImpl(locator()));
   _onAuthLocators();
 }
 
@@ -59,6 +61,9 @@ void _onAuthLocators() {
     () => LoginUseCase(
       locator(),
     ),
+  );
+  locator.registerFactory(
+    () => GetAllBlogsUseCase(blogRepository: locator()),
   );
   locator.registerFactory(
     () => SessionUseCase(
@@ -89,6 +94,7 @@ void _onAuthLocators() {
   );
   locator.registerFactory(
     () => BlogBloc(
+      locator(),
       locator(),
     ),
   );

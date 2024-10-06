@@ -9,7 +9,11 @@ final class BlogLoading extends BlogState {}
 
 final class BlogUploadSuccess extends BlogState {}
 
-final class BlogGetAllBlogsSuccess extends BlogState {}
+final class BlogGetAllBlogsSuccess extends BlogState {
+  final List<BlogEntity> blogs;
+
+  BlogGetAllBlogsSuccess(this.blogs, );
+}
 
 final class BlogError extends BlogState {
 
