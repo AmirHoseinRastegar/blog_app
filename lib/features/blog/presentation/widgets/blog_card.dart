@@ -1,6 +1,8 @@
 import 'package:blog_app/features/blog/domain/entites/blog_entity.dart';
 import 'package:flutter/material.dart';
 
+import '../../../../core/utils/reading_time_algoritm.dart';
+
 class BlogCard extends StatelessWidget {
   final Color color;
   final BlogEntity blog;
@@ -53,6 +55,10 @@ class BlogCard extends StatelessWidget {
                       fontSize: 20, fontWeight: FontWeight.bold),
                 ),
               ),
+              Padding(
+                padding: const EdgeInsets.only(left: 15),
+                child: Text('${readingTimeCalculator(blog.content)}min'),
+              )
             ],
           )
         ],
