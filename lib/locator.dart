@@ -7,6 +7,7 @@ import 'package:blog_app/features/auth/domain/usecases/auth_signup_usecase.dart'
 import 'package:blog_app/features/auth/domain/usecases/session_usecase.dart';
 import 'package:blog_app/features/auth/presentation/blocs/auth_bloc.dart';
 import 'package:blog_app/features/blog/data/data_source/blog_data_source.dart';
+import 'package:blog_app/features/blog/data/data_source/local_blog_data_source.dart';
 import 'package:blog_app/features/blog/data/repository/blog_repository_impl.dart';
 import 'package:blog_app/features/blog/domain/repository/blog_repository.dart';
 import 'package:blog_app/features/blog/domain/usecases/get_all_blogs_usecase.dart';
@@ -14,7 +15,9 @@ import 'package:blog_app/features/blog/domain/usecases/upload_blog_usecase.dart'
 import 'package:blog_app/features/blog/presentation/bloc/blog_bloc/blog_bloc.dart';
 import 'package:blog_app/features/profile/presentation/bloc/bottom_nav_cubit.dart';
 import 'package:get_it/get_it.dart';
+import 'package:hive/hive.dart';
 import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
+import 'package:path_provider/path_provider.dart';
 
 import 'core/constants/supabase_config.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -25,16 +28,19 @@ import 'core/cubit/toggle_password_obsecure_cubit/obsecure_password_cubit.dart';
 final locator = GetIt.instance;
 
 Future<void> setupLocator() async {
+  _onAuthLocators();
+
   final supabaseClient = await Supabase.initialize(
     url: Constants.supaBaseUrl,
     anonKey: Constants.supaBaseAnonKey,
   );
   locator.registerLazySingleton(() => supabaseClient.client);
   locator.registerFactory(() => InternetConnection());
+  Hive.defaultDirectory = (await getApplicationDocumentsDirectory()).path;
+  locator.registerLazySingleton(() => Hive.box(name: 'blogs'));
 
   locator.registerLazySingleton<ConnectionChecker>(
       () => ConnectionCheckerImpl(locator()));
-  _onAuthLocators();
 }
 
 void _onAuthLocators() {
@@ -75,8 +81,17 @@ void _onAuthLocators() {
       client: locator(),
     ),
   );
+  locator.registerFactory<LocalBlogDataSource>(
+    () => LocalBlogDataSourceImpl(
+      locator(),
+    ),
+  );
   locator.registerFactory<BlogRepository>(
-    () => BlogRepositoryImpl(locator(), locator()),
+    () => BlogRepositoryImpl(
+      locator(),
+      locator(),
+      locator(),
+    ),
   );
   locator.registerFactory(
     () => UploadBlogUseCase(

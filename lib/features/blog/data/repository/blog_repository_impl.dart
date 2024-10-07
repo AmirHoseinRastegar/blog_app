@@ -9,13 +9,16 @@ import '../../../../core/error/failure.dart';
 import '../../domain/entites/blog_entity.dart';
 import '../../domain/repository/blog_repository.dart';
 import '../data_source/blog_data_source.dart';
+import '../data_source/local_blog_data_source.dart';
 import '../models/blog_model.dart';
 
 class BlogRepositoryImpl implements BlogRepository {
   final ConnectionChecker connectionChecker;
   final BlogDataSource dataSource;
+  final LocalBlogDataSource localDataSource;
 
-  BlogRepositoryImpl(this.connectionChecker, this.dataSource);
+  BlogRepositoryImpl(
+      this.connectionChecker, this.dataSource, this.localDataSource);
 
   @override
   Future<Either<Failure, BlogEntity>> uploadBlog({
@@ -53,7 +56,11 @@ class BlogRepositoryImpl implements BlogRepository {
   @override
   Future<Either<Failure, List<BlogEntity>>> getAllBlogs() async {
     try {
+      if (!await (connectionChecker.isConnected)) {
+        return Right(localDataSource.loadBlogs());
+      }
       final getALlBlogs = await dataSource.getAllBlogs();
+      localDataSource.uploadBlogs(blogs: getALlBlogs);
       return Right(getALlBlogs);
     } on ServerException catch (e) {
       return Left(Failure(e.message));
