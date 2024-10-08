@@ -1,12 +1,14 @@
+import 'package:blog_app/features/blog/domain/entites/blog_entity.dart';
+import 'package:blog_app/features/blog/domain/entites/hive_manager.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive/hive.dart';
 
 import '../models/blog_model.dart';
 
 abstract interface class LocalBlogDataSource {
-  void uploadBlogs({required List<BlogModel> blogs});
+  void uploadBlogs({required List<BlogEntity> blogs});
 
-  List<BlogModel> loadBlogs();
+  List<BlogEntity> loadBlogs();
 }
 
 class LocalBlogDataSourceImpl implements LocalBlogDataSource {
@@ -15,25 +17,37 @@ class LocalBlogDataSourceImpl implements LocalBlogDataSource {
   LocalBlogDataSourceImpl(this.box);
 
   @override
-  List<BlogModel> loadBlogs() {
-    List<BlogModel> blogs = [];
-    box.read(() {
-      for (int i = 0; i < box.length; i++) {
-        blogs.add(BlogModel.fromJson(box.get(i.toString())));
-      }
-    });
-    return blogs;
+  List<BlogEntity> loadBlogs() {
+    return HiveManager.getBlogs();
   }
 
   @override
-  void uploadBlogs({required List<BlogModel> blogs}) {
-    box.clear();
-    box.write(() {
-
-    for(int i=0; i<blogs.length; i++){
-
-      box.put(i.toString(), blogs[i].toJson());}
-    });
-
+  void uploadBlogs({required List<BlogEntity> blogs}) {
+    HiveManager.uploadBlogs(blogs: blogs);
   }
+
+// @override
+// List<BlogModel> loadBlogs() {
+//   List<BlogModel> blog = [];
+//   box.read(() {
+//     for (int i = 0; i < box.length; i++) {
+//       blog.add(BlogModel.fromJson(box.get(i.toString())));
+//     }
+//   });
+//   print(blog);
+//
+//   return blog;
+// }
+//
+// @override
+// void uploadBlogs({required List<BlogModel> blogs}) {
+//   box.clear();
+//   box.write(() {
+//
+//   for(int i=0; i<blogs.length; i++){
+//
+//     box.put(i.toString(), blogs[i].toJson());}
+//   });
+//
+// }
 }

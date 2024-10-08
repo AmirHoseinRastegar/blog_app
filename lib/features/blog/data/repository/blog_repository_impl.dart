@@ -57,11 +57,11 @@ class BlogRepositoryImpl implements BlogRepository {
   Future<Either<Failure, List<BlogEntity>>> getAllBlogs() async {
     try {
       if (!await (connectionChecker.isConnected)) {
-        return Right(localDataSource.loadBlogs());
+        return right(localDataSource.loadBlogs());
       }
-      final getALlBlogs = await dataSource.getAllBlogs();
-      localDataSource.uploadBlogs(blogs: getALlBlogs);
-      return Right(getALlBlogs);
+      final blogsUploaded = await dataSource.getAllBlogs();
+      localDataSource.uploadBlogs(blogs: blogsUploaded);
+      return Right(blogsUploaded);
     } on ServerException catch (e) {
       return Left(Failure(e.message));
     }

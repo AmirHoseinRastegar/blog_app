@@ -1,6 +1,11 @@
+import 'package:blog_app/core/connection_checker/connection_checker.dart';
+import 'package:blog_app/features/blog/data/data_source/local_blog_data_source.dart';
+import 'package:blog_app/locator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
+import 'features/blog/presentation/bloc/blog_bloc/blog_bloc.dart';
 import 'features/profile/presentation/screens/profile_screen.dart';
 import 'features/blog/presentation/screens/home_screen.dart';
 
@@ -18,6 +23,12 @@ const homeIndex = 0;
 const profileIndex = 1;
 
 class _MainWrapper2State extends State<MainWrapper2> {
+  @override
+  void initState() {
+    super.initState();
+    context.read<BlogBloc>().add(GetAllBlogsEvent());
+
+  }
   final List<int> history = [];
 
   final List<GlobalKey<NavigatorState>> _navigatorKeys = [

@@ -9,6 +9,7 @@ import 'package:blog_app/features/auth/presentation/blocs/auth_bloc.dart';
 import 'package:blog_app/features/blog/data/data_source/blog_data_source.dart';
 import 'package:blog_app/features/blog/data/data_source/local_blog_data_source.dart';
 import 'package:blog_app/features/blog/data/repository/blog_repository_impl.dart';
+import 'package:blog_app/features/blog/domain/entites/hive_manager.dart';
 import 'package:blog_app/features/blog/domain/repository/blog_repository.dart';
 import 'package:blog_app/features/blog/domain/usecases/get_all_blogs_usecase.dart';
 import 'package:blog_app/features/blog/domain/usecases/upload_blog_usecase.dart';
@@ -24,6 +25,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 
 import 'core/cubit/presist_user_login_cubit/persist_login_cubit.dart';
 import 'core/cubit/toggle_password_obsecure_cubit/obsecure_password_cubit.dart';
+import 'features/blog/domain/entites/blog_entity.dart';
 
 final locator = GetIt.instance;
 
@@ -36,9 +38,9 @@ Future<void> setupLocator() async {
   );
   locator.registerLazySingleton(() => supabaseClient.client);
   locator.registerFactory(() => InternetConnection());
-  Hive.defaultDirectory = (await getApplicationDocumentsDirectory()).path;
-  locator.registerLazySingleton(() => Hive.box(name: 'blogs'));
-
+  // Hive.defaultDirectory = (await getApplicationDocumentsDirectory()).path;
+  // locator.registerLazySingleton(() => Hive.box(name: 'blogs'));
+  locator.registerLazySingleton<Box>(() => HiveManager.box);
   locator.registerLazySingleton<ConnectionChecker>(
       () => ConnectionCheckerImpl(locator()));
 }
@@ -52,6 +54,7 @@ void _onAuthLocators() {
   locator.registerFactory<AuthRepository>(
     () => AuthRepositoryImpl(
       remoteDataSource: locator(),
+      connectionChecker: locator(),
     ),
   );
   locator.registerFactory(
@@ -107,7 +110,7 @@ void _onAuthLocators() {
       locator(),
     ),
   );
-  locator.registerFactory(
+  locator.registerLazySingleton(
     () => BlogBloc(
       locator(),
       locator(),

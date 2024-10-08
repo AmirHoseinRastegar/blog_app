@@ -1,8 +1,10 @@
 import 'package:blog_app/core/cubit/presist_user_login_cubit/persist_login_cubit.dart';
+import 'package:blog_app/features/blog/domain/entites/hive_manager.dart';
 import 'package:blog_app/features/blog/presentation/bloc/blog_bloc/blog_bloc.dart';
 import 'package:blog_app/features/profile/presentation/bloc/bottom_nav_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hive/hive.dart';
 import 'core/cubit/toggle_password_obsecure_cubit/obsecure_password_cubit.dart';
 import 'core/theme/theme.dart';
 import 'features/auth/presentation/blocs/auth_bloc.dart';
@@ -11,6 +13,7 @@ import 'locator.dart';
 import 'main_wrapper.dart';
 
 void main() async {
+  await HiveManager.init();
   WidgetsFlutterBinding.ensureInitialized();
   await setupLocator();
   runApp(MultiBlocProvider(

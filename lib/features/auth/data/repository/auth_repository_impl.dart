@@ -1,3 +1,4 @@
+import 'package:blog_app/core/connection_checker/connection_checker.dart';
 import 'package:blog_app/core/error/server_exception.dart';
 import 'package:blog_app/features/auth/data/data_sources/remote/auth_remote_data_source.dart';
 import 'package:blog_app/features/auth/domain/entities/auth_user_entity.dart';
@@ -8,8 +9,9 @@ import '../../domain/repository/auth_repository.dart';
 
 class AuthRepositoryImpl implements AuthRepository {
   final AuthRemoteDataSource remoteDataSource;
+  final ConnectionChecker connectionChecker;
 
-  AuthRepositoryImpl({required this.remoteDataSource});
+  AuthRepositoryImpl({required this.remoteDataSource,required this.connectionChecker});
 
   @override
   Future<Either<Failure, UserEntity>> signUp(
@@ -39,6 +41,14 @@ class AuthRepositoryImpl implements AuthRepository {
   @override
   Future<Either<Failure, UserEntity>> getCurrentUser() async {
     try {
+      if (!await connectionChecker.isConnected) {
+        final session =  remoteDataSource.currentUserSession;
+        if (session == null) {
+          return left(Failure('User is not Logged In'));
+        }
+        return Right(UserEntity(
+            id: session.user.id, email: session.user.email ?? '', name: ''));
+      }
       final session = await remoteDataSource.getCurrentUserSession();
       if (session == null) {
         return left(Failure('user not logged in'));

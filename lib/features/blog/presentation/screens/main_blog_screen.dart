@@ -1,6 +1,5 @@
 import 'package:blog_app/core/constants/loading.dart';
 import 'package:blog_app/core/theme/pallet.dart';
-import 'package:blog_app/core/widgets/custom_app_bar.dart';
 import 'package:blog_app/features/blog/presentation/bloc/blog_bloc/blog_bloc.dart';
 import 'package:blog_app/features/blog/presentation/widgets/blog_card.dart';
 import 'package:flutter/cupertino.dart';
@@ -23,8 +22,10 @@ class MainBlogScreen extends StatefulWidget {
 class _MainBlogScreenState extends State<MainBlogScreen> {
   @override
   void initState() {
-    context.read<BlogBloc>().add(GetAllBlogsEvent());
     super.initState();
+
+    context.read<BlogBloc>().add(GetAllBlogsEvent());
+
   }
 
   @override

@@ -1,7 +1,9 @@
 import 'package:blog_app/features/blog/presentation/screens/blog_details_screen.dart';
 import 'package:blog_app/features/blog/presentation/screens/main_blog_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../bloc/blog_bloc/blog_bloc.dart';
 import 'add_blogs_screen.dart';
 
 class HomeScreen extends StatefulWidget {
