@@ -11,7 +11,8 @@ class AuthRepositoryImpl implements AuthRepository {
   final AuthRemoteDataSource remoteDataSource;
   final ConnectionChecker connectionChecker;
 
-  AuthRepositoryImpl({required this.remoteDataSource,required this.connectionChecker});
+  AuthRepositoryImpl(
+      {required this.remoteDataSource, required this.connectionChecker});
 
   @override
   Future<Either<Failure, UserEntity>> signUp(
@@ -42,20 +43,33 @@ class AuthRepositoryImpl implements AuthRepository {
   Future<Either<Failure, UserEntity>> getCurrentUser() async {
     try {
       if (!await connectionChecker.isConnected) {
-        final session =  remoteDataSource.currentUserSession;
+        final session = remoteDataSource.currentUserSession;
         if (session == null) {
-          return left(Failure('User is not Logged In'));
+          return left(
+            Failure('User is not Logged In'),
+          );
         }
-        return Right(UserEntity(
-            id: session.user.id, email: session.user.email ?? '', name: ''));
+        return Right(
+          UserEntity(
+            id: session.user.id,
+            email: session.user.email ?? '',
+            name: '',
+          ),
+        );
       }
       final session = await remoteDataSource.getCurrentUserSession();
       if (session == null) {
-        return left(Failure('user not logged in'));
+        return left(
+          Failure('user not logged in'),
+        );
       }
       return right(session);
     } catch (e) {
-      return Left(Failure(e.toString()));
+      return Left(
+        Failure(
+          e.toString(),
+        ),
+      );
     }
   }
 }
