@@ -2,6 +2,7 @@ import 'package:blog_app/core/utils/format_date.dart';
 import 'package:blog_app/core/utils/reading_time_algoritm.dart';
 import 'package:blog_app/core/widgets/custom_app_bar.dart';
 import 'package:blog_app/features/blog/domain/entites/blog_entity.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
 class BlogDetailsScreen extends StatelessWidget {
@@ -51,13 +52,17 @@ class BlogDetailsScreen extends StatelessWidget {
                 ),
                 ClipRRect(
                   borderRadius: BorderRadius.circular(12),
-                  child: Image.network(
-                    blog!.imageUrl,
+                  child: CachedNetworkImage(
+                    errorWidget: (context, url, error) =>  Container(
+                      color: Colors.white,
+                    ),
+                      imageUrl: blog!.imageUrl,
                     width: double.infinity,
                     height: 200,
                     fit: BoxFit.cover,
-                  ),
+                      ),
                 ),
+
                 const SizedBox(
                   height: 20,
                 ),
