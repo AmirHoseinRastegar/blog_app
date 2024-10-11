@@ -10,6 +10,8 @@ abstract interface class AuthRemoteDataSource {
 
   Future<UserModel> signIn(String email, String password);
 
+  Future<void> signOut();
+
   Future<UserModel?> getCurrentUserSession();
 }
 
@@ -71,6 +73,15 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
       }
       return null;
     } catch (e) {
+      throw ServerException(e.toString());
+    }
+  }
+
+  @override
+  Future<void> signOut() async {
+    try {
+      await client.auth.signOut();
+    } on ServerException catch (e) {
       throw ServerException(e.toString());
     }
   }

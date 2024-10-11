@@ -43,7 +43,7 @@ class _LoginScreenState extends State<LoginScreen> {
         padding: const EdgeInsets.all(15),
         child: SizedBox(
           width: double.infinity,
-          child: BlocConsumer<AuthBloc, AuthState>(
+          child: BlocConsumer<AuthBloc, AuthStates>(
             listener: (context, state) {
               if (state is AuthError) {
                 return snakBar(context, state.message);

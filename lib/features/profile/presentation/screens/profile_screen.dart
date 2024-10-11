@@ -1,4 +1,4 @@
-import 'package:blog_app/features/profile/presentation/screens/profile_detail_screen.dart';
+import 'package:blog_app/features/profile/presentation/screens/favorites_screen.dart';
 import 'package:flutter/material.dart';
 
 import 'main_profile_screen.dart';
@@ -24,8 +24,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
               switch (settings.name) {
                 case '/':
                   return const MainProfileScreen();
-                case '/profile_details':
-                  return const ProfileDetailScreen();
+                case '/favorite_posts':
+                  return const FavoritesScreen();
               }
               return Container();
             },

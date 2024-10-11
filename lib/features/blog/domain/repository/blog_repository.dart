@@ -14,4 +14,6 @@ abstract class BlogRepository {
   });
 
   Future<Either<Failure, List<BlogEntity>>> getAllBlogs();
+
+  // Either<Failure,BlogEntity> getBookMarkedBlog( {required BlogEntity blog});
 }

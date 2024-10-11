@@ -17,6 +17,15 @@ class HiveManager {
   }
   static List<BlogEntity> getBlogs() {
     return box.values.toList();
+
+  }
+  static addToBookmark({required BlogEntity blog}){
+
+    box.put(blog.id, blog);
+  }
+  static bool isBookMarked({required BlogEntity blog}){
+
+    return box.containsKey(blog.id);
   }
 
 }

@@ -5,6 +5,7 @@ import 'package:blog_app/features/auth/domain/repository/auth_repository.dart';
 import 'package:blog_app/features/auth/domain/usecases/auth_signin_usecase.dart';
 import 'package:blog_app/features/auth/domain/usecases/auth_signup_usecase.dart';
 import 'package:blog_app/features/auth/domain/usecases/session_usecase.dart';
+import 'package:blog_app/features/auth/domain/usecases/sign_out_usecase.dart';
 import 'package:blog_app/features/auth/presentation/blocs/auth_bloc.dart';
 import 'package:blog_app/features/blog/data/data_source/blog_data_source.dart';
 import 'package:blog_app/features/blog/data/data_source/local_blog_data_source.dart';
@@ -63,6 +64,11 @@ void _onAuthLocators() {
     ),
   );
   locator.registerFactory(
+    () => SignOutUseCase(
+      authRepository: locator(),
+    ),
+  );
+  locator.registerFactory(
     () => BottomNavCubit(),
   );
 
@@ -104,6 +110,7 @@ void _onAuthLocators() {
 
   locator.registerFactory(
     () => AuthBloc(
+      locator(),
       locator(),
       locator(),
       locator(),

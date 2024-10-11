@@ -10,7 +10,7 @@ class AuthSignUpEvent extends AuthEvent {
   final String password;
 
   AuthSignUpEvent(
-      {required this.name,required this.email,  required this.password});
+      {required this.name, required this.email, required this.password});
 }
 
 class AuthLoginEvent extends AuthEvent {
@@ -22,3 +22,5 @@ class AuthLoginEvent extends AuthEvent {
 }
 
 class IsUserLoggedInEvent extends AuthEvent {}
+
+class AuthSignOutEvent extends AuthEvent {}
