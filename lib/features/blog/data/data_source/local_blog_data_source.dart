@@ -10,7 +10,6 @@ abstract interface class LocalBlogDataSource {
 
   List<BlogEntity> loadBlogs();
 
-  BlogModel addToBookmark({required BlogEntity blog});
 
   bool isBookMarked({required BlogEntity blog});
 }
@@ -30,10 +29,7 @@ class LocalBlogDataSourceImpl implements LocalBlogDataSource {
     HiveManager.uploadBlogs(blogs: blogs);
   }
 
-  @override
-  BlogModel addToBookmark({required BlogEntity blog}) {
-  return  HiveManager.addToBookmark(blog: blog);
-  }
+
 
   @override
   bool isBookMarked({required BlogEntity blog}) {

@@ -1,9 +1,9 @@
 import 'package:hive_flutter/adapters.dart';
 
-part 'blog_entity.g.dart';
+part 'bookmark_entity.g.dart';
 
-@HiveType(typeId: 0)
-class BlogEntity {
+@HiveType(typeId: 1)
+class BookMarkEntity {
   @HiveField(0)
   final String title;
   @HiveField(1)
@@ -21,7 +21,7 @@ class BlogEntity {
   @HiveField(7)
   final String? name;
 
-  BlogEntity(
+  BookMarkEntity(
       {required this.title,
       required this.id,
       required this.posterId,

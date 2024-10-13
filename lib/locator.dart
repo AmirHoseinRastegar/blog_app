@@ -27,6 +27,8 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import 'core/cubit/presist_user_login_cubit/persist_login_cubit.dart';
 import 'core/cubit/toggle_password_obsecure_cubit/obsecure_password_cubit.dart';
 import 'features/blog/domain/entites/blog_entity.dart';
+import 'features/bookmark/data/data_source/local_bookmark_data_source.dart';
+import 'features/bookmark/domain/entities/bookmark_entity.dart';
 
 final locator = GetIt.instance;
 
@@ -39,9 +41,12 @@ Future<void> setupLocator() async {
   );
   locator.registerLazySingleton(() => supabaseClient.client);
   locator.registerFactory(() => InternetConnection());
-  // Hive.defaultDirectory = (await getApplicationDocumentsDirectory()).path;
-  // locator.registerLazySingleton(() => Hive.box(name: 'blogs'));
+  Box<BookMarkEntity> box2 = await Hive.openBox<BookMarkEntity>('bookMarks');
+
   locator.registerLazySingleton<Box>(() => HiveManager.box);
+  locator.registerSingleton<Box<BookMarkEntity>>(box2,
+      instanceName: 'bookMarks');
+  // locator.registerLazySingleton<Box>(() => HiveManager.box2);
   locator.registerLazySingleton<ConnectionChecker>(
       () => ConnectionCheckerImpl(locator()));
 }
@@ -93,6 +98,11 @@ void _onAuthLocators() {
   locator.registerFactory<LocalBlogDataSource>(
     () => LocalBlogDataSourceImpl(
       locator(),
+    ),
+  );
+  locator.registerFactory<BookmarkLocalDataSource>(
+    () => BookmarkLocalDataSourceImpl(
+      box: locator(),
     ),
   );
   locator.registerFactory<BlogRepository>(
