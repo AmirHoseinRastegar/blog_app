@@ -18,7 +18,7 @@ abstract class BookmarkLocalDataSource {
 }
 
 class BookmarkLocalDataSourceImpl implements BookmarkLocalDataSource {
-  final Box<BookMarkEntity> box;
+  final Box box;
 
   BookmarkLocalDataSourceImpl({
     required this.box,

@@ -10,8 +10,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../core/cubit/presist_user_login_cubit/persist_login_cubit.dart';
 import '../../../../core/theme/pallet.dart';
-import '../../../../core/widgets/custom_app_bar.dart';
-import '../../../auth/presentation/blocs/auth_bloc.dart';
+
 
 class AddBlogsScreen extends StatefulWidget {
   static rout() => MaterialPageRoute(

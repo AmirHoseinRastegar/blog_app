@@ -4,6 +4,7 @@ import 'package:hive_flutter/adapters.dart';
 
 class HiveManager {
   static final box = Hive.box<BlogEntity>('blogs');
+  // static final box2 = Hive.box<BlogEntity>('bookmarks');
 
   static init() async {
     await Hive.initFlutter();

@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:blog_app/core/error/failure.dart';
 import 'package:blog_app/core/usecase/interface_usecase.dart';
 import 'package:blog_app/features/blog/domain/entites/blog_entity.dart';
-import 'package:blog_app/features/bookmark/domain/entities/bookmark_entity.dart';
 import 'package:blog_app/features/bookmark/domain/repository/bookmark_repository.dart';
 import 'package:fpdart/src/either.dart';
 
@@ -19,7 +18,7 @@ class AddToBookMarksUseCase
         posterId: params.posterId,
         title: params.title,
         content: params.content,
-        image: params.image,
+        image: params.imageUrl,
         topics: params.topics);
   }
 }
@@ -28,9 +27,9 @@ class AddToBookMarksParams {
   final String title;
   final String content;
   final String posterId;
-  final File image;
+  final String imageUrl;
   final List<String> topics;
 
   AddToBookMarksParams(
-      this.title, this.content, this.posterId, this.image, this.topics);
+      this.title, this.content, this.posterId, this.imageUrl, this.topics);
 }

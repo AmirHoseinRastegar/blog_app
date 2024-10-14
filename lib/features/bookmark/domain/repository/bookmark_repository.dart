@@ -9,7 +9,7 @@ abstract class BookmarkRepository {
   Future<Either<Failure,BlogEntity>> addBookmark({required String posterId,
       required String title,
       required String content,
-      required File image,
+      required String image,
       required List<String> topics,});
   Future<Either<Failure,void>> removeBookmark(String id);
   Future<Either<Failure,List<BookMarkEntity>>> getAllBookmarks();

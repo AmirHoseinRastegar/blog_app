@@ -1,6 +1,8 @@
 import 'package:blog_app/features/blog/domain/entites/blog_entity.dart';
 import 'package:blog_app/features/blog/presentation/screens/blog_details_screen.dart';
+import 'package:blog_app/features/bookmark/presentation/bloc/bookmark_bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../core/utils/reading_time_algoritm.dart';
 
@@ -13,15 +15,15 @@ class BlogCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: (){
+      onTap: () {
         Navigator.push(context, BlogDetailsScreen.route(blog));
       },
       child: Container(
         height: 200,
         padding: const EdgeInsets.all(16),
         margin: const EdgeInsets.all(16).copyWith(bottom: 0),
-        decoration:
-            BoxDecoration(borderRadius: BorderRadius.circular(12), color: color),
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(12), color: color),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -60,9 +62,25 @@ class BlogCard extends StatelessWidget {
                         fontSize: 20, fontWeight: FontWeight.bold),
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.only(left: 15),
-                  child: Text('${readingTimeCalculator(blog.content)}min'),
+                Row(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(left: 15),
+                      child: Text('${readingTimeCalculator(blog.content)}min'),
+                    ),
+                    IconButton(
+                      onPressed: () {
+                        BlocProvider.of<BookmarkBloc>(context).add(BookmarkAddToBookMarkEvent(
+                          blog.title,
+                          blog.content,
+                          blog.posterId,
+                          blog.imageUrl,
+                          blog.topics
+                        ));
+                      },
+                      icon: const Icon(Icons.bookmark),
+                    ),
+                  ],
                 )
               ],
             )

@@ -50,7 +50,7 @@ class BookMarkRepositoryImpl implements BookmarkRepository {
       {required String posterId,
       required String title,
       required String content,
-      required File image,
+      required String image,
       required List<String> topics}) async {
     try {
       final blogModel = BlogModel(

@@ -1,6 +1,7 @@
 import 'package:blog_app/core/cubit/presist_user_login_cubit/persist_login_cubit.dart';
 import 'package:blog_app/features/blog/domain/entites/hive_manager.dart';
 import 'package:blog_app/features/blog/presentation/bloc/blog_bloc/blog_bloc.dart';
+import 'package:blog_app/features/bookmark/presentation/bloc/bookmark_bloc.dart';
 import 'package:blog_app/features/profile/presentation/bloc/bottom_nav_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -20,6 +21,9 @@ void main() async {
     providers: [
       BlocProvider(
         create: (context) => locator<AuthBloc>(),
+      ),
+      BlocProvider(
+        create: (context) => locator<BookmarkBloc>(),
       ),
       BlocProvider(
         create: (context) => locator<ObscurePasswordCubit>(),

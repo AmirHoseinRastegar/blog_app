@@ -15,9 +15,16 @@ import 'package:blog_app/features/blog/domain/repository/blog_repository.dart';
 import 'package:blog_app/features/blog/domain/usecases/get_all_blogs_usecase.dart';
 import 'package:blog_app/features/blog/domain/usecases/upload_blog_usecase.dart';
 import 'package:blog_app/features/blog/presentation/bloc/blog_bloc/blog_bloc.dart';
+import 'package:blog_app/features/bookmark/data/repository/bookmark_repositoryimpl.dart';
+import 'package:blog_app/features/bookmark/domain/repository/bookmark_repository.dart';
+import 'package:blog_app/features/bookmark/domain/use_cases/add_to_bookmark_usecase.dart';
+import 'package:blog_app/features/bookmark/presentation/bloc/bookmark_bloc.dart';
 import 'package:blog_app/features/profile/presentation/bloc/bottom_nav_cubit.dart';
 import 'package:get_it/get_it.dart';
 import 'package:hive/hive.dart';
+import 'package:hive_flutter/adapters.dart';
+import 'package:hive_flutter/adapters.dart';
+import 'package:hive_flutter/adapters.dart';
 import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
 import 'package:path_provider/path_provider.dart';
 
@@ -41,11 +48,11 @@ Future<void> setupLocator() async {
   );
   locator.registerLazySingleton(() => supabaseClient.client);
   locator.registerFactory(() => InternetConnection());
-  Box<BookMarkEntity> box2 = await Hive.openBox<BookMarkEntity>('bookMarks');
+  // Box<BookMarkEntity> box2 = await Hive.openBox<BookMarkEntity>('bookMarks');
 
   locator.registerLazySingleton<Box>(() => HiveManager.box);
-  locator.registerSingleton<Box<BookMarkEntity>>(box2,
-      instanceName: 'bookMarks');
+  // locator.registerSingleton<Box>(box2,
+  //     instanceName: 'bookMarks');
   // locator.registerLazySingleton<Box>(() => HiveManager.box2);
   locator.registerLazySingleton<ConnectionChecker>(
       () => ConnectionCheckerImpl(locator()));
@@ -63,8 +70,18 @@ void _onAuthLocators() {
       connectionChecker: locator(),
     ),
   );
+  locator.registerFactory<BookmarkRepository>(
+    () => BookMarkRepositoryImpl(
+      localDataSource: locator(),
+    ),
+  );
   locator.registerFactory(
     () => SignUpUseCase(
+      locator(),
+    ),
+  );
+  locator.registerFactory(
+    () => AddToBookMarksUseCase(
       locator(),
     ),
   );
@@ -130,6 +147,11 @@ void _onAuthLocators() {
   locator.registerLazySingleton(
     () => BlogBloc(
       locator(),
+      locator(),
+    ),
+  );
+  locator.registerLazySingleton(
+    () => BookmarkBloc(
       locator(),
     ),
   );
