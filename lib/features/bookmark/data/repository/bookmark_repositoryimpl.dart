@@ -9,9 +9,9 @@ import '../../domain/repository/bookmark_repository.dart';
 
 class BookMarkRepositoryImpl implements BookmarkRepository {
   final Box<BookMarkEntity> box;
-  final BookmarkLocalDataSource localDataSource;
 
-  BookMarkRepositoryImpl(this.box, {required this.localDataSource});
+
+  BookMarkRepositoryImpl(this.box,);
 
 
 
@@ -20,6 +20,7 @@ class BookMarkRepositoryImpl implements BookmarkRepository {
   @override
   Future<Either<Failure, void>> addBookmark(BookMarkEntity bookMarkEntity) async {
     try {
+      await box.clear();
       await box.put(bookMarkEntity.id, bookMarkEntity);
       return const Right(null);
     } catch (e) {

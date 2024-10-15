@@ -1,5 +1,7 @@
 import 'package:hive_flutter/adapters.dart';
 
+import '../../../blog/domain/entites/blog_entity.dart';
+
 part 'bookmark_entity.g.dart';
 
 @HiveType(typeId: 1)
@@ -31,4 +33,16 @@ class BookMarkEntity {
       required this.updatedAt,
       this.name});
 
+  factory BookMarkEntity.fromBlogEntity(BlogEntity blog) {
+    return BookMarkEntity(
+      posterId: blog.posterId,
+      title: blog.title,
+      content: blog.content,
+      imageUrl: blog.imageUrl,
+      name: blog.name,
+      id: blog.id,
+      topics: blog.topics,
+      updatedAt: blog.updatedAt,
+    );
+  }
 }

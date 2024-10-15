@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:blog_app/features/bookmark/domain/entities/bookmark_entity.dart';
+import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
 
 import '../../domain/use_cases/get_all_bookmarks_usecase.dart';
@@ -18,16 +19,23 @@ class BookmarkBloc extends Bloc<BookmarkEvent, BookmarkState> {
     on<BookmarkEvent>((event, emit) async {
       if (event is ToggleBookmarkEvent) {
         emit(BookMarkLoading());
-        final result = await toggleBookmark(event.bookMarkEntity);
+        final isBookmarked = toggleBookmark.repository
+            .isBookmarked(event.bookMarkEntity.posterId)
+            .getOrElse((_) => false);
+
+        final result = isBookmarked
+            ? await toggleBookmark.repository
+                .removeBookmark(event.bookMarkEntity.posterId)
+            : await toggleBookmark.repository.addBookmark(event.bookMarkEntity);
         result.fold(
           (l) => emit(
             BookMarkError(l.message),
           ),
-          (_) => add(
-            LoadBookmarksEvent(),
+          (_) => emit(
+            BookmarkToggled(!isBookmarked),
           ),
         );
-      }else if(event is LoadBookmarksEvent){
+      } else if (event is LoadBookmarksEvent) {
         emit(BookMarkLoading());
         final result = await getBookmarks();
         result.fold(

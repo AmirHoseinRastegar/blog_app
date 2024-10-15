@@ -2,6 +2,7 @@ import 'package:blog_app/core/constants/loading.dart';
 import 'package:blog_app/core/theme/pallet.dart';
 import 'package:blog_app/features/blog/presentation/bloc/blog_bloc/blog_bloc.dart';
 import 'package:blog_app/features/blog/presentation/widgets/blog_card.dart';
+import 'package:blog_app/features/bookmark/domain/entities/bookmark_entity.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

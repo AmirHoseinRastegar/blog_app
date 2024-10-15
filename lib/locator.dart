@@ -10,6 +10,7 @@ import 'package:blog_app/features/auth/presentation/blocs/auth_bloc.dart';
 import 'package:blog_app/features/blog/data/data_source/blog_data_source.dart';
 import 'package:blog_app/features/blog/data/data_source/local_blog_data_source.dart';
 import 'package:blog_app/features/blog/data/repository/blog_repository_impl.dart';
+import 'package:blog_app/features/blog/domain/entites/blog_entity.dart';
 import 'package:blog_app/features/blog/domain/entites/hive_manager.dart';
 import 'package:blog_app/features/blog/domain/repository/blog_repository.dart';
 import 'package:blog_app/features/blog/domain/usecases/get_all_blogs_usecase.dart';
@@ -39,11 +40,7 @@ import 'features/bookmark/presentation/bloc/bookmark_bloc.dart';
 final locator = GetIt.instance;
 
 Future<void> setupLocator() async {
-  // Initialize Hive
   Hive.initFlutter();
-
-  // Register the adapter and box
-  Hive.registerAdapter(BookMarkEntityAdapter());
 
   _onAuthLocators();
 
@@ -73,14 +70,15 @@ void _onAuthLocators() {
     ),
   );
   locator.registerSingletonAsync<Box<BookMarkEntity>>(() async {
-    return await Hive.openBox<BookMarkEntity>('bookmarks');
+    return await Hive.openBox<BookMarkEntity>('bookMarks');
   });
   locator.registerSingletonWithDependencies<BookmarkRepository>(
-        () => BookMarkRepositoryImpl(
+    () => BookMarkRepositoryImpl(
       locator<Box<BookMarkEntity>>(),
-      localDataSource: locator(),
     ),
-    dependsOn: [Box<BookMarkEntity>], // Ensure the box is ready before registering the repository
+    dependsOn: [
+      Box<BookMarkEntity>
+    ], // Ensure the box is ready before registering the repository
   );
 
   locator.registerFactory(
@@ -129,11 +127,12 @@ void _onAuthLocators() {
     () => LocalBlogDataSourceImpl(
       locator(),
     ),
-  );  locator.registerFactory<BookmarkLocalDataSource>(
-    () => BookmarkLocalDataSourceImpl(
-       box:  locator<Box<BookMarkEntity>>(),
-    ),
   );
+  // locator.registerFactory<BookmarkLocalDataSource>(
+  //   () => BookmarkLocalDataSourceImpl(
+  //      box:  locator<Box<BookMarkEntity>>(),
+  //   ),
+  // );
 
   locator.registerFactory<BlogRepository>(
     () => BlogRepositoryImpl(
@@ -147,7 +146,6 @@ void _onAuthLocators() {
       locator(),
     ),
   );
-
 
   locator.registerFactory(
     () => AuthBloc(

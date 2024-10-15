@@ -14,6 +14,7 @@ class HiveManager {
   static init() async {
     await Hive.initFlutter();
     Hive.registerAdapter<BlogEntity>(BlogEntityAdapter());
+    Hive.registerAdapter<BookMarkEntity>(BookMarkEntityAdapter());
     await Hive.openBox<BlogEntity>('blogs');
     await Hive.openBox<BookMarkEntity>('bookMarks');
   }
