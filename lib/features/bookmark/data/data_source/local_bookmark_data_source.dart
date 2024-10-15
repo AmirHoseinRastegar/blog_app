@@ -6,7 +6,7 @@ import '../../../blog/data/models/blog_model.dart';
 import '../../../blog/domain/entites/blog_entity.dart';
 
 abstract class BookmarkLocalDataSource {
-  BlogModel addToBookmark({required BlogEntity blog});
+  void addToBookmark({required BlogEntity blog});
 
   bool isBookMarked({required BlogEntity blog});
 
@@ -23,6 +23,7 @@ class BookmarkLocalDataSourceImpl implements BookmarkLocalDataSource {
   BookmarkLocalDataSourceImpl({
     required this.box,
   });
+
   //
   // @override
   // Future<void> addBookmark(BookMarkEntity bookmark) async {
@@ -45,12 +46,12 @@ class BookmarkLocalDataSourceImpl implements BookmarkLocalDataSource {
   }
 
   @override
-  BlogModel addToBookmark({required BlogEntity blog}) {
-   return HiveManager.addToBookmark(blog: blog);
+  void addToBookmark({required BlogEntity blog}) {
+    box.put(blog.id, blog);
   }
 
   @override
   bool isBookMarked({required BlogEntity blog}) {
-    return HiveManager.isBookMarked(blog: blog);
+    return box.containsKey(blog.id);
   }
 }

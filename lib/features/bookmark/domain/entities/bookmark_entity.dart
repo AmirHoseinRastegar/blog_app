@@ -30,4 +30,5 @@ class BookMarkEntity {
       required this.topics,
       required this.updatedAt,
       this.name});
+
 }

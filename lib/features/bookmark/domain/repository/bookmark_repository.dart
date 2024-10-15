@@ -6,12 +6,9 @@ import 'package:blog_app/features/bookmark/domain/entities/bookmark_entity.dart'
 import 'package:fpdart/fpdart.dart';
 
 abstract class BookmarkRepository {
-  Future<Either<Failure,BlogEntity>> addBookmark({required String posterId,
-      required String title,
-      required String content,
-      required String image,
-      required List<String> topics,});
-  Future<Either<Failure,void>> removeBookmark(String id);
-  Future<Either<Failure,List<BookMarkEntity>>> getAllBookmarks();
-  Future<Either<Failure,bool>> isBookmarked(String id);
+  Either<Failure, bool> isBookmarked(String posterId);
+  Future<Either<Failure, void>> addBookmark(BookMarkEntity blog);
+  Future<Either<Failure, void>> removeBookmark(String posterId);
+  Future<Either<Failure, List<BookMarkEntity>>> getBookmarks();
 }
+

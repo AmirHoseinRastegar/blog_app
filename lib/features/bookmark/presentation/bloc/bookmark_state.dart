@@ -5,18 +5,16 @@ sealed class BookmarkState {}
 
 final class BookmarkInitial extends BookmarkState {}
 
-final class BookmarkLoading extends BookmarkState {}
+final class BookMarkLoading extends BookmarkState {}
 
-final class BookmarkLoaded extends BookmarkState {
+final class BookMarkLoaded extends BookmarkState {
+  final List<BookMarkEntity> bookmarks;
 
-  final BlogEntity bookmark;
-
-  BookmarkLoaded(this.bookmark);
+  BookMarkLoaded(this.bookmarks);
 }
 
-final class BookmarkError extends BookmarkState {
-
+final class BookMarkError extends BookmarkState {
   final String message;
 
-  BookmarkError(this.message);
+  BookMarkError(this.message);
 }

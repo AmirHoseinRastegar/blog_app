@@ -15,8 +15,10 @@ import 'main_wrapper.dart';
 
 void main() async {
   await HiveManager.init();
+
   WidgetsFlutterBinding.ensureInitialized();
   await setupLocator();
+  await locator.allReady();
   runApp(MultiBlocProvider(
     providers: [
       BlocProvider(

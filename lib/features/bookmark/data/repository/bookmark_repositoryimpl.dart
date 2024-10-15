@@ -1,81 +1,58 @@
-import 'dart:io';
-
 import 'package:blog_app/core/error/failure.dart';
 import 'package:blog_app/features/blog/domain/entites/blog_entity.dart';
 import 'package:blog_app/features/bookmark/data/data_source/local_bookmark_data_source.dart';
 import 'package:blog_app/features/bookmark/domain/entities/bookmark_entity.dart';
 import 'package:fpdart/fpdart.dart';
-import 'package:uuid/uuid.dart';
+import 'package:hive_flutter/adapters.dart';
 
-import '../../../blog/data/models/blog_model.dart';
 import '../../domain/repository/bookmark_repository.dart';
 
 class BookMarkRepositoryImpl implements BookmarkRepository {
+  final Box<BookMarkEntity> box;
   final BookmarkLocalDataSource localDataSource;
 
-  BookMarkRepositoryImpl({required this.localDataSource});
+  BookMarkRepositoryImpl(this.box, {required this.localDataSource});
+
+
+
+
 
   @override
-  Future<Either<Failure, List<BookMarkEntity>>> getAllBookmarks() async {
+  Future<Either<Failure, void>> addBookmark(BookMarkEntity bookMarkEntity) async {
     try {
-      final res = await localDataSource.getAllBookmarks();
-      return Right(res);
+      await box.put(bookMarkEntity.id, bookMarkEntity);
+      return const Right(null);
     } catch (e) {
-      return Left(Failure(e.toString()));
+      return Left(Failure('Failed to add bookmark'));
     }
   }
 
   @override
-  Future<Either<Failure, bool>> isBookmarked(String id) async {
+  Future<Either<Failure, List<BookMarkEntity>>> getBookmarks() async{
     try {
-      final res = await localDataSource.isBookmarked(id);
-      return Right(res);
+      final bookmarks = box.values.toList();
+      return Right(bookmarks);
     } catch (e) {
-      return Left(Failure(e.toString()));
+      return Left(Failure('Failed to retrieve bookmarks'));
     }
   }
 
   @override
-  Future<Either<Failure, void>> removeBookmark(String id) async {
+  Either<Failure, bool> isBookmarked(String posterId) {
     try {
-      final res = await localDataSource.removeBookmark(id);
-      return Right(res);
+      return Right(box.containsKey(posterId));
     } catch (e) {
-      return Left(Failure(e.toString()));
+      return Left(Failure('Failed to check bookmark status'));
     }
   }
 
   @override
-  Future<Either<Failure, BlogEntity>> addBookmark(
-      {required String posterId,
-      required String title,
-      required String content,
-      required String image,
-      required List<String> topics}) async {
+  Future<Either<Failure, void>> removeBookmark(String posterId) async{
     try {
-      final blogModel = BlogModel(
-        posterId: posterId,
-        title: title,
-        content: content,
-        imageUrl: '',
-        topics: topics,
-        updatedAt: DateTime.now(),
-        id: const Uuid().v1(),
-      );
-      final bookMarkModel = BlogModel(
-          title: '',
-          content: content,
-          imageUrl: '',
-          topics: topics,
-          posterId: posterId,
-          updatedAt: DateTime.now(),
-          id: const Uuid().v1());
-
-      final result = localDataSource.addToBookmark(blog: bookMarkModel);
-
-      return Right(result);
+      await box.delete(posterId);
+      return const Right(null);
     } catch (e) {
-      return Left(Failure(e.toString()));
+      return Left(Failure('Failed to remove bookmark'));
     }
   }
 }
