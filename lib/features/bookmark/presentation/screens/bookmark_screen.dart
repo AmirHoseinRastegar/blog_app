@@ -22,7 +22,9 @@ class _BookmarksScreenState extends State<BookmarksScreen> {
   void _loadBookmarks() {
     final box = Hive.box<BookMarkEntity>('bookMarks');
     setState(() {
-      bookmarks = box.values.toList();
+
+           bookmarks = box.values.toList();
+      ;
     });
   }
 
